@@ -26,6 +26,16 @@ db.save({"_id":"2","nit":"50505050","rep_legal":"Diana L","fondos":0.0})
 # (2)  Select: selección de un documento por un determinado valor de llave ("_id")
 doc_creado = db["1"]
 print(doc_creado)
+#  Otra forma de ejecutar queries usando el lenguaje "mango" de consultas de CocuhDB (notación JSON)
+#  referencia de queries más complejos en:
+#  https://docs.couchdb.org/en/stable/api/database/find.html
+query = {"selector":{"rep_legal": "Diana L"}}
+docs = db.find(query)
+result = [] 
+# docs es un objeto iterable:
+for i in docs:
+  print(dict(i)) #i es un documento de couchdb que puede convertirse a diccionario...
+  result.append(dict(i)) #...y adicionarse a una lista
 
 # (3) Update: Modificación de un documento previamente consultado:
 doc_creado["fondos"] = 1000000.0
