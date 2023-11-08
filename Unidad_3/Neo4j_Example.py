@@ -11,22 +11,41 @@ username ="neo4j"
 pwd="Zo3oZFFmGXvZ3sHMqnNOUr7TG_3nya5kpnnZ0UAgXoQ"
 
 
+
+def connect():
+    global conn
+    conn = GraphDatabase.driver(url, auth=(username,pwd))
+
+
 #recomendar cursos a usuario de acuerdo a historial, calificaciones y cursos
 #similares
 
-#esta función devuelve los cursos que toma un usuario:
-def recomendar(id_u):
+#esta función devuelve la información de un usuario:
+def usuarios(id_u):
 
     conn = GraphDatabase.driver(url, auth=(username,pwd))
     #retornar cursos que toma un usuario con id = id_usuario    
     with conn.session() as session:
         #print(f"Session: {session._connection}")
-        query = f"MATCH (a:Aprendiz)-[r:Asiste]->(c:Curso) WHERE a.Id = {id_u} RETURN c "
+        query = f"MATCH (a:Aprendiz) WHERE a.Id = {id_u} RETURN a "
         result = session.run(query,id_u = id_u)
-        cursos = [record["c"] for record in result]
-        return cursos
+        data = [record["a"] for record in result]
+        return data
+
+#esta función devuelve los cursos que toma un usuario:
+def cursos(id_usuario):
+    with conn.session as session:
+        query = f""
+
+#esta función devuelve los usuarios que toman un curso dado:
+def usuarios_curso(id_curso):
+    pass
+
+#esta función devuelve los cursos calificados con nota > 4.0 por un usuario:
+def cursos_calificados(id_usuario):
+    pass
 
 if __name__ == "__main__":
 
     usr_id = input("Ingrese el id del usuario para el cual va a generar las recomendaciones: ")
-    print(recomendar(usr_id) )
+    print(usuarios(usr_id) )
